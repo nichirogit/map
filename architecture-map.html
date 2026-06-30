@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Imstor / Astrade Architecture Map</title>
+    <link rel="stylesheet" href="./architecture-map.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Imstor / Astrade infrastructure</p>
+          <h1>Архитектура API VM</h1>
+          <p class="hero-copy">
+            Карта собрана как набор паспортов сервисов: у каждого модуля видно,
+            кто его вызывает, куда он пишет, какие внешние системы использует и где смотреть логи.
+          </p>
+        </div>
+        <div class="hero-card">
+          <span class="status-dot"></span>
+          <div>
+            <strong>Linux API VM</strong>
+            <span>37.46.132.103 / API server</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <p class="eyebrow">30-second map</p>
+          <h2>Главные потоки</h2>
+        </div>
+
+        <div class="flow-board">
+          <article class="flow-card windows">
+            <div class="card-icon machine-icon" aria-hidden="true"></div>
+            <h3>Windows VM</h3>
+            <p>Scheduled Task запускает <code>detmir_parser</code>.</p>
+            <span class="repo-pill">nichirogit/detmir_parser</span>
+          </article>
+
+          <div class="flow-step">
+            <span>1</span>
+            <p>POST price report</p>
+          </div>
+
+          <article class="flow-card api">
+            <div class="card-icon machine-icon" aria-hidden="true"></div>
+            <h3>Linux API VM</h3>
+            <p>Docker services: API, bots, CDN, loaders, 1C exchange, logs.</p>
+            <span class="host-pill">37.46.132.103</span>
+          </article>
+
+          <div class="flow-step">
+            <span>2</span>
+            <p>write/read data</p>
+          </div>
+
+          <article class="flow-card db">
+            <div class="card-icon db-icon" aria-hidden="true"></div>
+            <h3>PostgreSQL</h3>
+            <p><code>core</code>, <code>datalens_prices</code>, future <code>reviews</code>.</p>
+            <span class="port-pill danger">public :5432</span>
+          </article>
+
+          <div class="flow-step">
+            <span>3</span>
+            <p>container logs</p>
+          </div>
+
+          <article class="flow-card obs">
+            <div class="card-icon grafana-icon" aria-hidden="true"></div>
+            <h3>Grafana + Loki</h3>
+            <p>Alloy собирает Docker logs, Grafana показывает dashboards.</p>
+            <span class="host-pill">logs.imstor.ru</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <p class="eyebrow">Machines</p>
+          <h2>Где что живёт</h2>
+        </div>
+
+        <div class="machine-grid">
+          <article class="machine-card">
+            <div class="machine-title">
+              <div class="machine-icon" aria-hidden="true"></div>
+              <div>
+                <h3>Windows VM</h3>
+                <p>Парсер цен по расписанию</p>
+              </div>
+            </div>
+            <ul class="plain-list">
+              <li><strong>Задача:</strong> запускать <code>detmir_parser</code>.</li>
+              <li><strong>Выход:</strong> отчёт цен в <code>core-api</code>.</li>
+              <li><strong>Репозиторий:</strong> <code>nichirogit/detmir_parser</code>.</li>
+            </ul>
