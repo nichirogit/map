@@ -98,3 +98,331 @@
               <li><strong>Выход:</strong> отчёт цен в <code>core-api</code>.</li>
               <li><strong>Репозиторий:</strong> <code>nichirogit/detmir_parser</code>.</li>
             </ul>
+          </article>
+
+          <article class="machine-card">
+            <div class="machine-title">
+              <div class="machine-icon linux" aria-hidden="true"></div>
+              <div>
+                <h3>Linux API VM</h3>
+                <p><code>37.46.132.103</code> / <code>/srv/stack</code></p>
+              </div>
+            </div>
+            <ul class="plain-list">
+              <li><strong>Основной compose:</strong> <code>/srv/stack/docker-compose.yml</code>.</li>
+              <li><strong>Infra compose:</strong> <code>/srv/stack/infra/observability</code>.</li>
+              <li><strong>Nginx:</strong> HTTPS domains на приватные локальные порты.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <p class="eyebrow">Service passports</p>
+          <h2>Модули и их зависимости</h2>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card api-card" id="core-api">
+            <div class="service-head">
+              <div>
+                <span class="type-label api">public API</span>
+                <h3>core-api</h3>
+              </div>
+              <span class="access public">public :8000</span>
+            </div>
+            <p class="purpose">Принимает отчёт цен от Windows-парсера и отдаёт актуальные цены наружу.</p>
+            <div class="mini-flow">
+              <span>Windows parser</span>
+              <b>POST</b>
+              <span>core-api</span>
+              <b>DB</b>
+              <span>core.public.prices</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Кто вызывает</dt><dd>Windows VM / <code>detmir_parser</code>; клиенты <code>/prices.json</code>.</dd></div>
+              <div><dt>Что отдаёт</dt><dd><code>GET /prices.json</code>, <code>GET /health</code>.</dd></div>
+              <div><dt>Куда пишет</dt><dd><code>core.public.prices</code>.</dd></div>
+              <div><dt>Документация</dt><dd><span class="missing">README нет</span>.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card bot-card" id="pachka-bot">
+            <div class="service-head">
+              <div>
+                <span class="type-label bot">bot</span>
+                <h3>pachka-bot</h3>
+              </div>
+              <span class="access public">public :5000</span>
+            </div>
+            <p class="purpose">Бот скидок: берёт данные из Google Sheets и отправляет сообщения через webhook.</p>
+            <div class="mini-flow">
+              <span>Google Sheets</span>
+              <b>read</b>
+              <span>pachka-bot</span>
+              <b>send</b>
+              <span>Webhook API</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Кто вызывает</dt><dd>Webhook endpoint и APScheduler внутри контейнера.</dd></div>
+              <div><dt>Что использует</dt><dd><code>SHEETS_URL</code>, <code>WEBHOOK_URL</code>, <code>ACCESS_TOKEN</code>.</dd></div>
+              <div><dt>Логи</dt><dd><code>/srv/stack/logs/pachka-bot</code> + Docker logs.</dd></div>
+              <div><dt>Репа / docs</dt><dd><span class="repo">nichirogit/pachka_bot</span>, README есть.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card internal-card" id="coupon-cdn">
+            <div class="service-head">
+              <div>
+                <span class="type-label internal">internal web</span>
+                <h3>coupon-cdn</h3>
+              </div>
+              <span class="access private">127.0.0.1:8010</span>
+            </div>
+            <p class="purpose">Админка и публичные JSON/script для купонов Astradepets.</p>
+            <div class="mini-flow">
+              <span>Nginx</span>
+              <b>HTTPS</b>
+              <span>coupon-cdn</span>
+              <b>DB</b>
+              <span>core.coupon_cdn_coupons</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Домены</dt><dd><code>coupons.astradepets.ru</code>, <code>cdn-coupons.astradepets.ru</code>.</dd></div>
+              <div><dt>Что отдаёт</dt><dd><code>/admin</code>, <code>/api/coupons</code>, <code>/promo-groups.json</code>, <code>/script.js</code>.</dd></div>
+              <div><dt>Куда пишет</dt><dd><code>core.coupon_cdn_coupons</code>.</dd></div>
+              <div><dt>Документация</dt><dd>README есть, GitHub repo не указан.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card worker-card" id="mail-loader">
+            <div class="service-head">
+              <div>
+                <span class="type-label worker">worker</span>
+                <h3>mail-loader</h3>
+              </div>
+              <span class="access worker">no public port</span>
+            </div>
+            <p class="purpose">Фоновый загрузчик: забирает вложения из почты и раскладывает их по хранилищам и БД.</p>
+            <div class="mini-flow">
+              <span>Yandex IMAP</span>
+              <b>files</b>
+              <span>mail-loader</span>
+              <b>upload</b>
+              <span>Drive / Disk</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Что читает</dt><dd>Yandex IMAP, письма от <code>gcp.exchange@imstor.ru</code>.</dd></div>
+              <div><dt>Куда пишет</dt><dd><code>core.mail_loader_*</code>, <code>datalens_prices.prices.nomenclature_prices_current</code>.</dd></div>
+              <div><dt>Внешние системы</dt><dd>Google Drive, Yandex Disk.</dd></div>
+              <div><dt>Документация</dt><dd><span class="missing">README нет</span>.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card worker-card" id="astrade-1c-exchange">
+            <div class="service-head">
+              <div>
+                <span class="type-label worker">1C exchange</span>
+                <h3>astrade-1c-exchange</h3>
+              </div>
+              <span class="access private">127.0.0.1:8020</span>
+            </div>
+            <p class="purpose">Принимает CommerceML/1C exchange и готовит публичные stock exports.</p>
+            <div class="mini-flow">
+              <span>1C / download.imstor.ru</span>
+              <b>import</b>
+              <span>service</span>
+              <b>DB/files</b>
+              <span>core.astrade_* + output</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Домены</dt><dd><code>download.imstor.ru</code> через nginx.</dd></div>
+              <div><dt>Файлы</dt><dd><code>/srv/stack/data/astrade-1c-exchange</code>.</dd></div>
+              <div><dt>Куда пишет</dt><dd><code>core.astrade_catalogs</code>, <code>core.astrade_products</code>, <code>core.astrade_offers</code>.</dd></div>
+              <div><dt>Документация</dt><dd>README есть, GitHub repo не указан.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card obs-card" id="observability">
+            <div class="service-head">
+              <div>
+                <span class="type-label obs">observability</span>
+                <h3>Grafana + Loki + Alloy</h3>
+              </div>
+              <span class="access private">Grafana 127.0.0.1:3000</span>
+            </div>
+            <p class="purpose">Единая точка просмотра Docker-логов и health-check dashboard.</p>
+            <div class="mini-flow">
+              <span>Docker logs</span>
+              <b>Alloy</b>
+              <span>Loki</span>
+              <b>view</b>
+              <span>Grafana</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Домен</dt><dd><code>logs.imstor.ru</code> через nginx.</dd></div>
+              <div><dt>Что собирает</dt><dd>stdout/stderr всех Docker-контейнеров.</dd></div>
+              <div><dt>Health checks</dt><dd><code>parklon-health</code> каждые 5 минут.</dd></div>
+              <div><dt>Документация</dt><dd><span class="missing">README нет</span>.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card health-card" id="parklon-health">
+            <div class="service-head">
+              <div>
+                <span class="type-label health">health check</span>
+                <h3>parklon-health</h3>
+              </div>
+              <span class="access worker">every 5 min</span>
+            </div>
+            <p class="purpose">Маленький curl-контейнер для проверки SDT API, parklon.ru и видимости товаров.</p>
+            <div class="mini-flow">
+              <span>SDT + parklon.ru</span>
+              <b>curl</b>
+              <span>stdout</span>
+              <b>logs</b>
+              <span>Loki/Grafana</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Проверяет</dt><dd>SDT delivery city API, <code>parklon.ru</code>, <code>/catalog-of-carpets/</code>.</dd></div>
+              <div><dt>DB stub</dt><dd>Если товары видны, пишет <code>db_stub=alive</code>.</dd></div>
+              <div><dt>Dashboard</dt><dd><code>logs.imstor.ru/d/parklon-health/parklon-health</code>.</dd></div>
+              <div><dt>Документация</dt><dd><span class="missing">README нет</span>.</dd></div>
+            </dl>
+          </article>
+
+          <article class="service-card future-card" id="reviews-api">
+            <div class="service-head">
+              <div>
+                <span class="type-label future">future</span>
+                <h3>reviews-api</h3>
+              </div>
+              <span class="access future">planned</span>
+            </div>
+            <p class="purpose">Будущий сервис отзывов на этой же Linux API VM.</p>
+            <div class="mini-flow future">
+              <span>clients</span>
+              <b>API</b>
+              <span>reviews-api</span>
+              <b>DB</b>
+              <span>reviews database</span>
+            </div>
+            <dl class="dependency-list">
+              <div><dt>Где будет жить</dt><dd>Docker container on <code>37.46.132.103</code>.</dd></div>
+              <div><dt>Куда пишет</dt><dd>Future <code>reviews</code> DB / schema.</dd></div>
+              <div><dt>Логи</dt><dd>Автоматически через Alloy -> Loki -> Grafana.</dd></div>
+              <div><dt>Репа</dt><dd><span class="repo">nichirogit/reviews-api</span>.</dd></div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block split-section">
+        <div class="matrix-card">
+          <div class="section-heading compact">
+            <p class="eyebrow">Data ownership</p>
+            <h2>Какая база кому принадлежит</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Database / table</th>
+                <th>Owner</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>core.public.prices</code></td>
+                <td>core-api</td>
+                <td>Актуальные цены из Windows parser.</td>
+              </tr>
+              <tr>
+                <td><code>core.coupon_cdn_coupons</code></td>
+                <td>coupon-cdn</td>
+                <td>Купоны и публичные promo JSON.</td>
+              </tr>
+              <tr>
+                <td><code>core.mail_loader_*</code></td>
+                <td>mail-loader</td>
+                <td>История запусков и обработанных файлов.</td>
+              </tr>
+              <tr>
+                <td><code>datalens_prices.prices.*</code></td>
+                <td>mail-loader</td>
+                <td>Текущие цены для DataLens.</td>
+              </tr>
+              <tr>
+                <td><code>core.astrade_*</code></td>
+                <td>astrade-1c-exchange</td>
+                <td>1C imports, offers, products, classifiers.</td>
+              </tr>
+              <tr class="future-row">
+                <td><code>reviews</code></td>
+                <td>reviews-api</td>
+                <td>Будущая база отзывов.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="matrix-card">
+          <div class="section-heading compact">
+            <p class="eyebrow">Ports and domains</p>
+            <h2>Как попасть в сервис</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Entry</th>
+                <th>Target</th>
+                <th>Access</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>37.46.132.103:8000</code></td>
+                <td>core-api</td>
+                <td><span class="access public">public</span></td>
+              </tr>
+              <tr>
+                <td><code>37.46.132.103:5000</code></td>
+                <td>pachka-bot</td>
+                <td><span class="access public">public</span></td>
+              </tr>
+              <tr>
+                <td><code>37.46.132.103:5432</code></td>
+                <td>postgres</td>
+                <td><span class="access public">public</span></td>
+              </tr>
+              <tr>
+                <td><code>coupons.astradepets.ru</code></td>
+                <td>127.0.0.1:8010 / coupon-cdn</td>
+                <td><span class="access private">nginx</span></td>
+              </tr>
+              <tr>
+                <td><code>download.imstor.ru</code></td>
+                <td>127.0.0.1:8020 / astrade-1c-exchange</td>
+                <td><span class="access private">nginx</span></td>
+              </tr>
+              <tr>
+                <td><code>logs.imstor.ru</code></td>
+                <td>127.0.0.1:3000 / Grafana</td>
+                <td><span class="access private">nginx</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="legend">
+        <div><span class="legend-swatch api"></span> Public API</div>
+        <div><span class="legend-swatch internal"></span> Internal web service</div>
+        <div><span class="legend-swatch worker"></span> Worker / scheduled job</div>
+        <div><span class="legend-swatch obs"></span> Observability</div>
+        <div><span class="legend-swatch future"></span> Future module</div>
+      </section>
+    </main>
+  </body>
+</html>
