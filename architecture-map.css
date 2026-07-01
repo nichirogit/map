@@ -98,3 +98,662 @@ h3 {
 
 .hero-copy {
   max-width: 860px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.hero-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.hero-card strong,
+.hero-card span {
+  display: block;
+}
+
+.hero-card span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 7px var(--green-soft);
+}
+
+.section-block {
+  margin-top: 34px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.section-heading.compact {
+  display: block;
+}
+
+.flow-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr) 72px minmax(0, 1fr) 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.flow-card,
+.machine-card,
+.service-card,
+.matrix-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+}
+
+.flow-card {
+  min-height: 190px;
+  padding: 22px;
+}
+
+.flow-card p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.flow-card.windows {
+  border-top: 6px solid var(--yellow);
+}
+
+.flow-card.api {
+  border-top: 6px solid var(--blue);
+}
+
+.flow-card.db {
+  border-top: 6px solid #4a8ee8;
+}
+
+.flow-card.obs {
+  border-top: 6px solid var(--purple);
+}
+
+.flow-step {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.flow-step span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.card-icon,
+.machine-icon {
+  width: 42px;
+  height: 34px;
+  margin-bottom: 16px;
+  border: 2px solid var(--blue);
+  border-radius: 8px;
+  position: relative;
+  background: var(--blue-soft);
+}
+
+.machine-icon::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: -8px;
+  height: 2px;
+  background: var(--blue);
+}
+
+.machine-icon::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  bottom: -8px;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid var(--blue);
+  border-right: 2px solid var(--blue);
+}
+
+.machine-icon.linux {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.machine-icon.linux::before,
+.machine-icon.linux::after {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.db-icon {
+  border: none;
+  border-radius: 50% / 22%;
+  background: linear-gradient(#4a8ee8, #1f78d1);
+}
+
+.db-icon::before {
+  content: "";
+  position: absolute;
+  inset: 6px 4px auto;
+  height: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+}
+
+.grafana-icon {
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: #f47a20;
+}
+
+.grafana-icon::after {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border: 3px solid #fff4ea;
+  border-left-color: transparent;
+  border-radius: 50%;
+}
+
+.repo-pill,
+.host-pill,
+.port-pill,
+.access,
+.type-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.repo-pill,
+.host-pill {
+  color: #24405f;
+  background: var(--soft);
+}
+
+.port-pill.danger,
+.access.public {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+.access.private {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.access.worker {
+  color: var(--yellow);
+  background: var(--yellow-soft);
+}
+
+.access.future {
+  color: var(--future);
+  background: #eef0f4;
+}
+
+.machine-grid,
+.split-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.machine-card {
+  padding: 24px;
+}
+
+.machine-title {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.machine-title .machine-icon {
+  margin-bottom: 0;
+  flex: 0 0 auto;
+}
+
+.machine-title p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.plain-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.service-card {
+  min-height: 455px;
+  padding: 22px;
+  border-top-width: 6px;
+  min-width: 0;
+}
+
+.api-card {
+  border-top-color: var(--blue);
+}
+
+.bot-card {
+  border-top-color: var(--purple);
+}
+
+.internal-card {
+  border-top-color: var(--green);
+}
+
+.worker-card {
+  border-top-color: var(--yellow);
+}
+
+.obs-card {
+  border-top-color: var(--purple);
+}
+
+.health-card {
+  border-top-color: var(--green);
+}
+
+.future-card {
+  border-style: dashed;
+  border-top-color: var(--future);
+  background: linear-gradient(180deg, #fff, #f7f8fb);
+}
+
+.service-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 16px;
+  min-width: 0;
+}
+
+.service-head > div {
+  min-width: 0;
+}
+
+.service-head h3 {
+  overflow-wrap: anywhere;
+}
+
+.type-label {
+  margin-bottom: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.type-label.api {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.type-label.bot,
+.type-label.obs {
+  color: var(--purple);
+  background: var(--purple-soft);
+}
+
+.type-label.internal,
+.type-label.health {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.type-label.worker {
+  color: var(--yellow);
+  background: var(--yellow-soft);
+}
+
+.type-label.future {
+  color: var(--future);
+  background: #eef0f4;
+}
+
+.purpose {
+  min-height: 58px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.mini-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin: 18px 0;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.mini-flow span,
+.mini-flow b {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 7px;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 12px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.mini-flow span {
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.mini-flow b {
+  color: #fff;
+  background: var(--ink);
+}
+
+.mini-flow.future {
+  opacity: 0.72;
+}
+
+.dependency-list {
+  display: grid;
+  gap: 11px;
+  margin: 0;
+}
+
+.dependency-list div {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+}
+
+.dependency-list dt {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.dependency-list dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.missing {
+  color: var(--red);
+  font-weight: 800;
+}
+
+.repo {
+  color: var(--purple);
+  font-weight: 850;
+}
+
+.matrix-card {
+  padding: 24px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+th,
+td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  color: #2c3b54;
+  background: #f4f7fb;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.future-row td {
+  background: #fafbfe;
+  color: var(--future);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-top: 34px;
+  padding: 18px 22px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.legend div {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.legend-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.legend-swatch.api {
+  background: var(--blue);
+}
+
+.legend-swatch.internal {
+  background: var(--green);
+}
+
+.legend-swatch.worker {
+  background: var(--yellow);
+}
+
+.legend-swatch.obs {
+  background: var(--purple);
+}
+
+.legend-swatch.future {
+  background: transparent;
+  border: 2px dashed var(--future);
+}
+
+@media (max-width: 1280px) {
+  .flow-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .flow-step {
+    min-height: 88px;
+    border: 1px dashed var(--line);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.66);
+  }
+
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1399.98px) {
+  .service-card .mini-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .service-card .mini-flow b {
+    min-height: 32px;
+  }
+}
+
+@media (min-width: 576px) {
+  .page-shell {
+    max-width: 540px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .page-shell {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page-shell {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .page-shell {
+    max-width: 1320px;
+  }
+}
+
+@media (max-width: 1152px) {
+  .hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .flow-board {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-step {
+    min-height: 62px;
+  }
+
+  .service-grid,
+  .machine-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .mini-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .dependency-list div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-shell {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .hero,
+  .flow-card,
+  .machine-card,
+  .service-card,
+  .matrix-card {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .service-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .access {
+    width: fit-content;
+  }
+}
